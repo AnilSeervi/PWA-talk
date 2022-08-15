@@ -1,0 +1,22 @@
+* {
+  font-family: "Iosevka" !important;
+}
+
+* {
+  color: rgb(157, 134, 233);
+}
+
+a {
+  color: rgb(253 154 0) !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+.gap-4 {
+  gap: 1rem;
+}

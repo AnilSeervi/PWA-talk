@@ -1,0 +1,812 @@
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+
+import "./styles.css";
+import PWA from "./images/PWA.png";
+import zenduty from "./images/zen.svg";
+import PWAzen from "./images/PWA-zen.svg";
+import pwacompare from "./images/pwa-web-native.png";
+import https from "./images/https.jpeg";
+import sw from "./images/service-worker.jpeg";
+import core from "./images/core.png";
+import swEvents from "./images/sw-events.png";
+import devtools from "./images/devtools.png";
+import devtoolsSW from "./images/devtools-sw.png";
+import installD from "./images/installD.png";
+import installM from "./images/installM.png";
+import installM1 from "./images/installM1.png";
+import installM2 from "./images/installM2.png";
+import appd from "./images/appd.png";
+import appm from "./images/appm.png";
+import appm1 from "./images/appm1.png";
+import twitter from "./images/twitter.svg";
+import linkedin from "./images/linkedin.svg";
+import hey from "./images/hey.gif";
+import thank from "./images/thank.gif";
+import { github, nightOwl } from "@code-surfer/themes";
+nightOwl.colors.background = "#000";
+
+export const theme = nightOwl;
+
+---
+
+# Hello 👋
+
+<img src={hey} />
+
+---
+
+<div align="left">
+
+# Anil Seervi
+
+<div className="flex gap-4" style={{ marginBottom: "1em" }}>
+  Software Development Engineer at{" "}
+  <span>
+    <img src={zenduty} width="45" />{" "}
+    <a href="https://www.zenduty.com" target="_blank">
+      Zenduty
+    </a>
+  </span>
+</div>
+
+<ul>
+  <Appear>
+    <li>Front-End stack</li>
+    <li>Open-Source</li>
+  </Appear>
+</ul>
+
+</div>
+
+---
+
+<div style={{width:400}}>
+
+<img src={PWA} />
+
+</div>
+
+### The Essentials for Building Progressive Web Apps
+
+---
+
+# What exactly is a PWA ?
+
+---
+
+<img src={pwacompare} />
+
+---
+
+<div align="left">
+
+## Characteristics of a Progressive Web App
+
+<ul>
+  <Appear>
+    <li>Discoverable 🔍</li>
+    <li>Installable 📥</li>
+    <li>Re-Engageable 🔔</li>
+    <li>Network-Independent 🛫</li>
+    <li>Progressive ✨</li>
+    <li>Safe 🔒</li>
+    <li>Responsive 📱</li>
+    <li>Linkable 🔗</li>
+  </Appear>
+</ul>
+
+</div>
+
+---
+
+<img src={core} />
+
+# Core Building Blocks 🧱
+
+<Appear>
+  <div>
+    <li> HTTPS 🔐 </li>
+    <li>
+      Service Worker
+      <span style={{ color: "white" }}>&nbsp;⚙️</span>
+    </li>
+    <li>Web App Manifest 📝</li>
+  </div>
+</Appear>
+
+---
+
+<Image
+  src={https}
+  size="cover"
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "white",
+    opacity:0.5
+  }}
+>
+
+</Image>
+
+### 🔐 HTTPS
+
+---
+
+<img src={sw} width="800" />
+
+# Service Workers
+
+---
+
+<CodeSurfer>
+
+```html title="React Boileplate" subtitle="index.html"
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- add <script> to register service worker -->
+  </body>
+</html>
+```
+
+```html subtitle="Register a service worker"
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Vite + React + TS</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js");
+        });
+      }
+    </script>
+  </body>
+</html>
+```
+
+</CodeSurfer>
+
+---
+
+## Service Worker Events
+
+<img src={swEvents} />
+
+<div style={{marginBlock:"1em"}}>
+
+</div>
+
+---
+
+<CodeSurfer>
+
+```js title="sw.js" subtitle="install event"
+const CACHE_NAME = "pwa-cache-v1"; // cache bucket name
+const staticAssets = [
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/favicon.svg",
+  "/styles.css",
+];
+
+// install serviceWorker
+self.addEventListener("install", (evt) => {
+  console.log("serviceworker installed");
+  evt.waitUntil(
+    // precache required assets
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(staticAssets);
+      console.log("cached all static assets");
+    }),
+  );
+});
+```
+
+```js subtitle="Activate new service worker"
+const CACHE_NAME = "pwa-cache-v1"; // cache bucket name
+const staticAssets = [
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/favicon.svg",
+  "/styles.css",
+];
+
+// install serviceWorker
+self.addEventListener("install", (evt) => {
+  console.log("serviceworker installed");
+  evt.waitUntil(
+    // precache required assets
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(staticAssets);
+      console.log("cached all static assets");
+    }),
+  );
+});
+
+// activate event
+self.addEventListener("activate", (evt) => {
+  evt.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key)),
+      );
+    }),
+  );
+});
+```
+
+```js subtitle="fetch event"
+const CACHE_NAME = "pwa-cache-v1"; // cache bucket name
+const staticAssets = [
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/favicon.svg",
+  "/styles.css",
+];
+
+// install serviceWorker
+self.addEventListener("install", (evt) => {
+  console.log("serviceworker installed");
+  evt.waitUntil(
+    // precache required assets
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(staticAssets);
+      console.log("cached all static assets");
+    }),
+  );
+});
+
+// activate event
+self.addEventListener("activate", (evt) => {
+  evt.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key)),
+      );
+    }),
+  );
+});
+
+// fetch event
+self.addEventListener("fetch", (evt) => {
+  evt.respondWith(
+    caches.match(evt.request).then((cacheRes) => {
+      return (
+        cacheRes ||
+        fetch(evt.request).then(async (fetchRes) => {
+          return fetchRes;
+        })
+      );
+    }),
+  );
+});
+```
+
+</CodeSurfer>
+
+---
+
+# Web App Manifests
+
+<Appear>
+
+Metadata file: that makes your PWA installable
+
+</Appear>
+
+---
+
+<CodeSurfer>
+
+```js title="manifest.json"
+{
+  "lang": "en-US",
+  "short_name": "QP Hoard",
+  "name": "QP Hoard - Question Paper Bank",
+  "description": "Website(PWA) to Download Question Papers for Undergrads. Download Question Papers for BCA, BCOM and BBA.",
+  "start_url": "/",
+  "scope": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#651fff",
+}
+```
+
+```js
+{
+  "lang": "en-US",
+  "short_name": "QP Hoard",
+  "name": "QP Hoard - Question Paper Bank",
+  "description": "Website(PWA) to Download Question Papers for Undergrads. Download Question Papers for BCA, BCOM and BBA.",
+  "start_url": "/",
+  "scope": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#651fff",
+  "icons": [
+    {
+      "src": "images/icons/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+    },
+    {
+      "src": "images/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+    },
+    {
+      "src": "images/icons/logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    }
+  ],
+}
+```
+
+</CodeSurfer>
+
+---
+
+<CodeSurfer>
+
+```html title="index.html"
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Vite + React + TS</title>
+    <link rel="manifest" href="/manifest.json" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js");
+        });
+      }
+    </script>
+  </body>
+</html>
+```
+
+```html title="Link manifest file" 15
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/favicon.svg"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Vite + React + TS</title>
+    <link rel="manifest" href="/manifest.json" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js");
+        });
+      }
+    </script>
+  </body>
+</html>
+```
+
+</CodeSurfer>
+
+---
+
+### DevTools Debug
+
+<div style={{display:"flex", gap:"1rem", height:800}}>
+
+<img
+  src={devtools}
+  style={{
+    width: "100%",
+    height: "100%",
+  }}
+/>
+
+<img
+  src={devtoolsSW}
+  style={{
+    width: "100%",
+    height: "100%",
+  }}
+/>
+
+</div>
+
+---
+
+## Installability
+
+<div style={{marginInline:"8rem"}}>
+
+<ul>
+
+<Appear>
+
+### Criteria ✅
+
+<div>
+
+<li>Serving the web app on HTTPS.</li>
+<li>At least one icon in the correct format and size.</li>
+<li>A registered service worker.</li>
+<li>
+  A fetch event handler in the service worker to provide a
+  basic offline experience.
+</li>
+
+</div>
+
+### Listen for Event
+
+<li>
+  <code>"beforeinstallprompt"</code> event
+</li>
+
+</Appear>
+
+</ul>
+
+</div>
+
+---
+
+<CodeSurfer>
+
+```js subtitle="store event for later use"
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  deferredPrompt = e;
+  // show Install promotion
+  showInAppInstallPromotion();
+});
+```
+
+```js
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  deferredPrompt = e;
+  // show Install promotion
+  showInAppInstallPromotion();
+});
+
+installButton.addEventListener("click", async () => {
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  // The deferredPrompt can only be used once.
+  deferredPrompt = null;
+  if (outcome === "accepted") {
+    console.log("User accepted the install prompt.");
+  } else if (outcome === "dismissed") {
+    console.log("User dismissed the install prompt");
+  }
+});
+```
+
+```js
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  deferredPrompt = e;
+  // show Install promotion
+  showInAppInstallPromotion();
+});
+
+installButton.addEventListener("click", async () => {
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  // The deferredPrompt can only be used once.
+  deferredPrompt = null;
+  if (outcome === "accepted") {
+    console.log("User accepted the install prompt.");
+  } else if (outcome === "dismissed") {
+    console.log("User dismissed the install prompt");
+  }
+});
+
+window.addEventListener("appinstalled", () => {
+  // If visible, hide the install promotion
+  hideInAppInstallPromotion();
+  console.log("INSTALL: Success");
+});
+```
+
+</CodeSurfer>
+
+---
+
+### Trigger install
+
+<div className="flex" style={{height:"50vh", gap:"1em"}}>
+
+<img
+  src={installD}
+  style={{
+    width: "80%",
+    height: "100%",
+    backgroundSize: "contain",
+  }}
+/>
+<img
+  src={installM}
+  style={{ width: "100%", height: "100%" }}
+/>
+<img
+  src={installM2}
+  style={{ width: "100%", height: "100%" }}
+/>
+
+</div>
+
+---
+
+### Standalone App
+
+<div className="flex" style={{height:"50vh", gap:"1em"}}>
+
+<img
+  src={appd}
+  style={{
+    width: "80%",
+    height: "100%",
+    backgroundSize: "contain",
+  }}
+/>
+<img
+  src={appm1}
+  style={{ width: "100%", height: "100%" }}
+/>
+<img src={appm} style={{ width: "100%", height: "100%" }} />
+
+</div>
+
+---
+
+# Why do we need PWAs
+
+![](https://codetiburon.com/app/uploads/2019/05/Who-are-we-meme.png)
+
+---
+
+### Success Stories
+
+<ul style={{fontSize:"1.7rem", marginInline:"7rem"}}>
+
+<Appear>
+
+<li>
+  <p style={{ marginBottom: "1rem" }}>
+    Starbucks: The Starbucks PWA has increased daily active
+    users twice. Orders on desktop are nearly the same rate
+    as mobile. (
+    <a href="https://twitter.com/davidbrunelle/status/993960071406080000">
+      source
+    </a>
+    ).
+  </p>
+</li>
+<li>
+  <p style={{ marginBottom: "1rem" }}>
+    MakeMyTrip: MakeMyTrip's PWA saw a 3x increase in
+    conversion and 160% increase in shopper sessions. Pages
+    are 38% faster. First-time shoppers are 3x more likely
+    to convert on the PWA than in native app. (
+    <a href="https://developers.google.com/web/showcase/2017/make-my-trip">
+      source
+    </a>
+    ).
+  </p>
+</li>
+<li>
+  <p style={{ marginBottom: "1rem" }}>
+    Flipkart: Flipkart's PWA is driving 50% of its new
+    customer acquisition. Nearly 60% of visitors to the PWA
+    had previously uninstalled the native app primarily to
+    save space. (
+    <a href="http://tech.economictimes.indiatimes.com/news/internet/for-flipkart-this-app-makes-rural-connect/59676200">
+      source
+    </a>
+    ).
+  </p>
+</li>
+<li>
+  <p style={{ marginBottom: "1rem" }}>
+    Tinder: Tinder cut load times from 11.91 seconds to 4.68
+    seconds with their PWA. The app is 90% smaller than the
+    compiled Android app. (
+    <a href="https://medium.com/@addyosmani/a-tinder-progressive-web-app-performance-case-study-78919d98ece0">
+      source
+    </a>
+    ).
+  </p>
+</li>
+
+See more stats on https://pwastats.com
+
+</Appear>
+
+</ul>
+
+---
+
+<CodeSurfer>
+
+```json title="Link your native apps" subtitle="manifest.json"
+{
+  "lang": "en-US",
+  "short_name": "QP Hoard",
+  "name": "QP Hoard - Question Paper Bank",
+  "description": "Website(PWA) to Download Question Papers for Undergrads. Download Question Papers for BCA, BCOM and BBA.",
+  "start_url": "/",
+  "scope": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#651fff",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.example.app1",
+      "id": "com.example.app1"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://itunes.apple.com/app/example-app1/id123456789"
+    }
+  ],
+  "icons": [
+    {
+      "src": "images/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
+```
+
+```json 11:22
+{
+  "lang": "en-US",
+  "short_name": "QP Hoard",
+  "name": "QP Hoard - Question Paper Bank",
+  "description": "Website(PWA) to Download Question Papers for Undergrads. Download Question Papers for BCA, BCOM and BBA.",
+  "start_url": "/",
+  "scope": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#651fff",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.example.app1",
+      "id": "com.example.app1"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://itunes.apple.com/app/example-app1/id123456789"
+    }
+  ],
+  "icons": [
+    {
+      "src": "images/icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
+```
+
+</CodeSurfer>
+
+---
+
+## Other features
+
+- Workbox
+- Bubblewrap, PWABuilder
+- Push Notifications
+- Background sync
+- Share targets, etc
+
+---
+
+# Thank You
+
+<img src={thank} />
+
+<div style={{marginBlock:"3rem"}}>
+<p
+  className="flex items-center"
+  style={{ gap: "1em", marginBlock: "10px" }}
+>
+  <img
+    src={twitter}
+    style={{ width: "50px", color: "#1DA1F2" }}
+  />{" "}
+  <a href="https://twitter.com/linaseervi">@linaseervi</a>
+</p>
+
+<p
+  className="flex items-center"
+  style={{ gap: "1em", marginBlock: "10px" }}
+>
+  <img
+    src={linkedin}
+    style={{ width: "40px", color: "#1DA1F2" }}
+  />{" "}
+  <a href="https://linkedin.com/in/anilseervi">
+    in/anilseervi
+  </a>
+</p>
+</div>
+
+---
